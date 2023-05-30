@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp( MaterialApp(
+  runApp(MaterialApp(
     theme: ThemeData(
       // Define the default brightness and colors.
       brightness: Brightness.dark,
@@ -26,8 +26,6 @@ void main() {
   ));
 }
 
-
-
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -38,21 +36,19 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   TextEditingController textEditingController = TextEditingController();
 
-
   @override
   void initState() {
-
     SendRequestCurrentWeather();
 
     super.initState();
   }
 
   void SendRequestCurrentWeather() async {
-
     var apiKey = '5427f61cc3cd630eb45c9e9486f91aec';
-    var cityName='tabriz';
-    var response =await Dio().get('https://api.openweathermap.org/data/2.5/weather',
-        queryParameters: {'appid':apiKey,'q':cityName,'units':'metric'});
+    var cityName = 'tabriz';
+    var response = await Dio().get(
+        'https://api.openweathermap.org/data/2.5/weather',
+        queryParameters: {'appid': apiKey, 'q': cityName, 'units': 'metric'});
 
     print(response.data);
   }
@@ -64,7 +60,7 @@ class _MyAppState extends State<MyApp> {
         backgroundColor: Colors.blueAccent,
         title: const Text('weather App'),
         elevation: 15,
-        actions:<Widget> [
+        actions: <Widget>[
           PopupMenuButton<String>(
             itemBuilder: (_) {
               return const [
@@ -80,12 +76,12 @@ class _MyAppState extends State<MyApp> {
       ),
       body: Container(
         decoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
-            // image: DecorationImage(
-              // fit: BoxFit.cover,
-              // image: AssetImage('images/pxfuel.jpg'),
-            // )
-      ),
+          border: Border.all(color: Colors.black),
+          // image: DecorationImage(
+          // fit: BoxFit.cover,
+          // image: AssetImage('images/pxfuel.jpg'),
+          // )
+        ),
         // color: Colors.black,
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
@@ -109,7 +105,6 @@ class _MyAppState extends State<MyApp> {
                           hintText: 'enter city name',
                           border: UnderlineInputBorder(),
                         ),
-
                       ),
                     ),
                   ],
