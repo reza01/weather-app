@@ -45,8 +45,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   void SendRequestCurrentWeather() async {
-
-    print("humidity >>>>------------------------------------------------------------" );
+    print(
+        "humidity >>>>------------------------------------------------------------");
     var apiKey = '5427f61cc3cd630eb45c9e9486f91aec';
     var cityName = 'tabriz';
     var response = await Dio().get(
@@ -72,9 +72,9 @@ class _MyAppState extends State<MyApp> {
         response.data["sys"]["sunset"]);
 
     print("humidity >>>>" +
-        response.data["wind"]["speed"].toString()+ "===" +
+        response.data["wind"]["speed"].toString() +
+        "===" +
         response.data["sys"]["country"].toString());
-
   }
 
   @override
@@ -83,7 +83,6 @@ class _MyAppState extends State<MyApp> {
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
         title: const Text('weather App'),
-        elevation: 15,
         actions: <Widget>[
           PopupMenuButton<String>(
             itemBuilder: (_) {
@@ -101,10 +100,10 @@ class _MyAppState extends State<MyApp> {
       body: Container(
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black),
-          // image: DecorationImage(
-          // fit: BoxFit.cover,
-          // image: AssetImage('images/pxfuel.jpg'),
-          // )
+          image: DecorationImage(
+          fit: BoxFit.cover,
+          image: AssetImage('images/bg.jpg'),
+          )
         ),
         // color: Colors.black,
         child: BackdropFilter(
@@ -348,7 +347,6 @@ class _MyAppState extends State<MyApp> {
                   ],
                 ),
               ),
-
             ],
           ),
         ),
@@ -356,5 +354,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
-
