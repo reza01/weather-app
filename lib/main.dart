@@ -39,21 +39,29 @@ class _MyAppState extends State<MyApp> {
   TextEditingController textEditingController = TextEditingController();
   late Future<CurrentCityDataModel> currentweatherFuture;
 
+  var cityName = 'tabriz';
+
   @override
   void initState() {
     super.initState();
 
-    currentweatherFuture = SendRequestCurrentWeather();
+    currentweatherFuture = SendRequestCurrentWeather(cityName);
   }
 
-  Future<CurrentCityDataModel> SendRequestCurrentWeather() async {
+  Future<CurrentCityDataModel> SendRequestCurrentWeather(
+      String cityName) async {
     print(
         "humidity >>>>------------------------------------------------------------");
+
     var apiKey = '5427f61cc3cd630eb45c9e9486f91aec';
-    var cityName = 'tabriz';
+
     var response = await Dio().get(
         'https://api.openweathermap.org/data/2.5/weather',
-        queryParameters: {'appid': apiKey, 'q': cityName, 'units': 'metric'});
+        queryParameters: {
+          'appid': apiKey,
+          'q': this.cityName,
+          'units': 'metric'
+        });
 
     print(response.data);
 
@@ -65,9 +73,9 @@ class _MyAppState extends State<MyApp> {
         response.data["weather"][0]["description"],
         response.data["main"]["temp_min"],
         response.data["main"]["temp_max"],
-        response.data["wind"]["pressure"],
-        response.data["wind"]["humidity"],
-        response.data["wind"]["speed"],
+        response.data["main"]["pressure"],
+        response.data["main"]["humidity"],
+        response.data["main"]["temp"],
         response.data["dt"],
         response.data["sys"]["country"],
         response.data["sys"]["sunrise"],
@@ -105,6 +113,10 @@ class _MyAppState extends State<MyApp> {
         future: currentweatherFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            CurrentCityDataModel? currentCityDataModel = snapshot.data;
+
+            //https://openweathermap.org/current
+
             return Container(
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),
@@ -143,7 +155,7 @@ class _MyAppState extends State<MyApp> {
                     Padding(
                       padding: EdgeInsets.only(top: 10),
                       child: Text(
-                        'MUNTAIN VIEW',
+                        currentCityDataModel!.cityname,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 30,
@@ -154,7 +166,7 @@ class _MyAppState extends State<MyApp> {
                     Padding(
                       padding: EdgeInsets.only(top: 15),
                       child: Text(
-                        'Clear Sky',
+                        currentCityDataModel.descrition,
                         style: TextStyle(fontSize: 14, color: Colors.black),
                       ),
                     ),
@@ -169,7 +181,7 @@ class _MyAppState extends State<MyApp> {
                     Padding(
                       padding: EdgeInsets.only(top: 15),
                       child: Text(
-                        '24' + '\u00b0',
+                        currentCityDataModel.temp.toString() + '\u00b0',
                         style: TextStyle(color: Colors.white, fontSize: 60),
                       ),
                     ),
@@ -186,7 +198,7 @@ class _MyAppState extends State<MyApp> {
                             Padding(
                               padding: const EdgeInsets.only(top: 5),
                               child: Text(
-                                '28' + '\u00b0',
+                                currentCityDataModel.temp_max.toString() + '\u00b0',
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),
@@ -209,7 +221,7 @@ class _MyAppState extends State<MyApp> {
                               Padding(
                                 padding: const EdgeInsets.only(top: 5),
                                 child: Text(
-                                  '17' + '\u00b0',
+                                  currentCityDataModel.temp_min.toString() + '\u00b0',
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
@@ -299,7 +311,7 @@ class _MyAppState extends State<MyApp> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 8),
                                   child: Text(
-                                    '4.7 m/s',
+                                    currentCityDataModel.sunset.toString(),
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
@@ -319,14 +331,14 @@ class _MyAppState extends State<MyApp> {
                             child: Column(
                               children: [
                                 Text(
-                                  'wind speed',
+                                  'humidity',
                                   style: TextStyle(
                                       color: Colors.grey, fontSize: 15),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 8),
                                   child: Text(
-                                    '4.7 m/s',
+                                    currentCityDataModel.humidity.toString() + '%',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
@@ -346,14 +358,14 @@ class _MyAppState extends State<MyApp> {
                             child: Column(
                               children: [
                                 Text(
-                                  'wind speed',
+                                  'pressure',
                                   style: TextStyle(
                                       color: Colors.grey, fontSize: 15),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 8),
                                   child: Text(
-                                    '4.7 m/s',
+                                    currentCityDataModel.pressure.toString(),
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
@@ -373,7 +385,6 @@ class _MyAppState extends State<MyApp> {
                 color: Colors.white,
                 fontSize: 60,
                 dotSpacing: 2,
-
               ),
             );
           }
