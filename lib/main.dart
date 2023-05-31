@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:weather/Model/CurrentCityDataModel.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -44,6 +45,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   void SendRequestCurrentWeather() async {
+
+    print("humidity >>>>------------------------------------------------------------" );
     var apiKey = '5427f61cc3cd630eb45c9e9486f91aec';
     var cityName = 'tabriz';
     var response = await Dio().get(
@@ -51,6 +54,27 @@ class _MyAppState extends State<MyApp> {
         queryParameters: {'appid': apiKey, 'q': cityName, 'units': 'metric'});
 
     print(response.data);
+
+    var dataModel = CurrentCityDataModel(
+        response.data["name"],
+        response.data["coord"]["lon"],
+        response.data["coord"]["lat"],
+        response.data["weather"][0]["main"],
+        response.data["weather"][0]["description"],
+        response.data["main"]["temp_min"],
+        response.data["main"]["temp_max"],
+        response.data["wind"]["pressure"],
+        response.data["wind"]["humidity"],
+        response.data["wind"]["speed"],
+        response.data["dt"],
+        response.data["sys"]["country"],
+        response.data["sys"]["sunrise"],
+        response.data["sys"]["sunset"]);
+
+    print("humidity >>>>" +
+        response.data["wind"]["speed"].toString()+ "===" +
+        response.data["sys"]["country"].toString());
+
   }
 
   @override
@@ -324,45 +348,13 @@ class _MyAppState extends State<MyApp> {
                   ],
                 ),
               ),
-              // Row(
-              //   children: [
-              //     Text(
-              //       'wind speed',
-              //       style: TextStyle(color: Colors.grey),
-              //     ),
-              //     Padding(padding: const EdgeInsets.only(top: 8),
-              //       child: Text(
-              //         '4.7 m/s',
-              //         style: TextStyle(color: Colors.white),
-              //       ),
-              //     ),
-              //   ],
-              // ),
+
             ],
           ),
         ),
       ),
     );
-    // return Container(
-    //   color: Colors.purpleAccent,
-    // );
-    // return const Placeholder();
   }
 }
 
-//---------------------------------------------------
-// class MyApp extends StatefulWidget {
-//   const MyApp({Key? key}) : super(key: key);
-//
-//   @override
-//   State<MyApp> createState() => _MyAppState();
-// }
-//
-// class _MyAppState extends State<MyApp> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(backgroundColor: Colors.blueAccent, title: const Text('Weather App')),
-//     );
-//   }
-// }
+
