@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:weather/Model/CurrentCityDataModel.dart';
 
@@ -19,7 +20,7 @@ void main() {
       // text styling for headlines, titles, bodies of text, and more.
       textTheme: const TextTheme(
         displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-        titleLarge: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+        titleLarge: TextStyle(fontSize: 21.0, fontStyle: FontStyle.italic),
         bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
       ),
     ),
@@ -39,7 +40,7 @@ class _MyAppState extends State<MyApp> {
   TextEditingController textEditingController = TextEditingController();
   late Future<CurrentCityDataModel> currentweatherFuture;
 
-  var cityName = 'tabriz';
+  var cityName = 'tehran';
 
   @override
   void initState() {
@@ -50,9 +51,6 @@ class _MyAppState extends State<MyApp> {
 
   Future<CurrentCityDataModel> SendRequestCurrentWeather(
       String cityName) async {
-    print(
-        "humidity >>>>------------------------------------------------------------");
-
     var apiKey = '5427f61cc3cd630eb45c9e9486f91aec';
 
     var response = await Dio().get(
@@ -81,9 +79,9 @@ class _MyAppState extends State<MyApp> {
         response.data["sys"]["sunrise"],
         response.data["sys"]["sunset"]);
 
-    print("humidity >>>>" +
+    print(" >>>>" +
         response.data["wind"]["speed"].toString() +
-        "===" +
+        "---" +
         response.data["sys"]["country"].toString());
 
     return dataModel;
@@ -94,7 +92,7 @@ class _MyAppState extends State<MyApp> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
-        title: const Text('weather App'),
+        title: const Text('OpenWeatherMap App'),
         actions: <Widget>[
           PopupMenuButton<String>(
             itemBuilder: (_) {
@@ -117,10 +115,20 @@ class _MyAppState extends State<MyApp> {
 
             //https://openweathermap.org/current
 
+            final formatter = DateFormat.jm();
+            var sunrise = formatter.format(
+                new DateTime.fromMicrosecondsSinceEpoch(
+                    currentCityDataModel!.sunrise * 1000,
+                    isUtc: true));
+            var sunset = formatter.format(
+                new DateTime.fromMicrosecondsSinceEpoch(
+                    currentCityDataModel!.sunset * 1000,
+                    isUtc: true));
+
             return Container(
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),
-                  image: DecorationImage(
+                  image: const DecorationImage(
                     fit: BoxFit.cover,
                     image: AssetImage('images/bg.jpg'),
                   )),
@@ -143,7 +151,7 @@ class _MyAppState extends State<MyApp> {
                           Expanded(
                             child: TextField(
                               controller: textEditingController,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 hintText: 'enter city name',
                                 border: UnderlineInputBorder(),
                               ),
@@ -153,10 +161,10 @@ class _MyAppState extends State<MyApp> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 10),
+                      padding: const EdgeInsets.only(top: 10),
                       child: Text(
                         currentCityDataModel!.cityname,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -170,7 +178,7 @@ class _MyAppState extends State<MyApp> {
                         style: TextStyle(fontSize: 14, color: Colors.black),
                       ),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(top: 30),
                       child: Icon(
                         Icons.sunny_snowing,
@@ -190,7 +198,7 @@ class _MyAppState extends State<MyApp> {
                       children: [
                         Column(
                           children: [
-                            Text(
+                            const Text(
                               'max',
                               style:
                                   TextStyle(color: Colors.grey, fontSize: 15),
@@ -198,7 +206,8 @@ class _MyAppState extends State<MyApp> {
                             Padding(
                               padding: const EdgeInsets.only(top: 5),
                               child: Text(
-                                currentCityDataModel.temp_max.toString() + '\u00b0',
+                                currentCityDataModel.temp_max.toString() +
+                                    '\u00b0',
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),
@@ -213,7 +222,7 @@ class _MyAppState extends State<MyApp> {
                           padding: const EdgeInsets.only(left: 10),
                           child: Column(
                             children: [
-                              Text(
+                              const Text(
                                 'min',
                                 style:
                                     TextStyle(color: Colors.grey, fontSize: 15),
@@ -221,8 +230,9 @@ class _MyAppState extends State<MyApp> {
                               Padding(
                                 padding: const EdgeInsets.only(top: 5),
                                 child: Text(
-                                  currentCityDataModel.temp_min.toString() + '\u00b0',
-                                  style: TextStyle(
+                                  currentCityDataModel.temp_min.toString() +
+                                      '\u00b0',
+                                  style: const TextStyle(
                                     color: Colors.white,
                                   ),
                                 ),
@@ -258,10 +268,10 @@ class _MyAppState extends State<MyApp> {
                                     child: Card(
                                       color: Colors.transparent,
                                       child: Column(
-                                        children: [
+                                        children: const [
                                           Padding(
                                             padding:
-                                                const EdgeInsets.only(top: 8.0),
+                                                EdgeInsets.only(top: 8.0),
                                             child: Text(
                                               'Fri,8pm',
                                               style: TextStyle(
@@ -303,16 +313,16 @@ class _MyAppState extends State<MyApp> {
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Column(
                               children: [
-                                Text(
-                                  'wind speed',
+                                const Text(
+                                  'sunrise',
                                   style: TextStyle(
                                       color: Colors.grey, fontSize: 15),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 8),
                                   child: Text(
-                                    currentCityDataModel.sunset.toString(),
-                                    style: TextStyle(color: Colors.white),
+                                    sunrise,
+                                    style: const TextStyle(color: Colors.white),
                                   ),
                                 ),
                               ],
@@ -338,7 +348,8 @@ class _MyAppState extends State<MyApp> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 8),
                                   child: Text(
-                                    currentCityDataModel.humidity.toString() + '%',
+                                    currentCityDataModel.humidity.toString() +
+                                        '%',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
@@ -357,15 +368,15 @@ class _MyAppState extends State<MyApp> {
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Column(
                               children: [
-                                Text(
-                                  'pressure',
+                                const Text(
+                                  'sunset',
                                   style: TextStyle(
                                       color: Colors.grey, fontSize: 15),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 8),
                                   child: Text(
-                                    currentCityDataModel.pressure.toString(),
+                                    sunset,
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),

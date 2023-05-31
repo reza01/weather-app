@@ -33,7 +33,7 @@ class CurrentCityDataModel {
       this._sunrise,
       this._sunset);
 
-  get  sunset => _sunset;
+  get sunset => _sunset;
 
   get sunrise => _sunrise;
 
