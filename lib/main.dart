@@ -41,6 +41,14 @@ class _MyAppState extends State<MyApp> {
   late Future<CurrentCityDataModel> currentweatherFuture;
 
   var cityName = 'tehran';
+  String icon = '';
+
+  var format_sunRise;
+  var sunRise;
+  var format_sunSet;
+  var format_sunRiseEnd;
+  var format_sunSetEnd;
+  var sunSet;
 
   @override
   void initState() {
@@ -79,10 +87,12 @@ class _MyAppState extends State<MyApp> {
         response.data["sys"]["sunrise"],
         response.data["sys"]["sunset"]);
 
+    icon= response.data['weather'][0]['icon'];
+
     print(" >>>>" +
-        response.data["wind"]["speed"].toString() +
+        response.data["sys"]["sunrise"].toString() +
         "---" +
-        response.data["sys"]["country"].toString());
+        response.data["sys"]["sunset"].toString());
 
     return dataModel;
   }
@@ -116,14 +126,25 @@ class _MyAppState extends State<MyApp> {
             //https://openweathermap.org/current
 
             final formatter = DateFormat.jm();
-            var sunrise = formatter.format(
+            var sunRise = formatter.format(
                 new DateTime.fromMicrosecondsSinceEpoch(
-                    currentCityDataModel!.sunrise * 1000,
+                    currentCityDataModel?.sunrise * 1000,
                     isUtc: true));
-            var sunset = formatter.format(
+
+            // var sunRise = currentCityDataModel?.sunrise;
+            // format_sunRise = DateTime.fromMillisecondsSinceEpoch(sunRise*1000,isUtc: true);
+            // format_sunRiseEnd = format_sunRise.add(Duration(hours: 1));
+
+            var sunSet = formatter.format(
                 new DateTime.fromMicrosecondsSinceEpoch(
-                    currentCityDataModel!.sunset * 1000,
+                    currentCityDataModel?.sunset * 1000,
                     isUtc: true));
+
+
+            // sunSet = currentCityDataModel?.sunset;
+            // format_sunSet = DateTime.fromMillisecondsSinceEpoch(sunSet*1000);
+            // format_sunSetEnd = format_sunSet.add(Duration(hours: 1));
+
 
             return Container(
               decoration: BoxDecoration(
@@ -178,19 +199,17 @@ class _MyAppState extends State<MyApp> {
                         style: TextStyle(fontSize: 14, color: Colors.black),
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 30),
-                      child: Icon(
-                        Icons.sunny_snowing,
-                        color: Colors.white,
-                        size: 80,
+                    Padding(
+                      padding: EdgeInsets.only(top: 1),
+                      child: Image.network(
+                        'http://openweathermap.org/img/wn/' + icon + '@2x.png',
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 15),
+                      padding: EdgeInsets.only(top: 1),
                       child: Text(
                         currentCityDataModel.temp.toString() + '\u00b0',
-                        style: TextStyle(color: Colors.white, fontSize: 60),
+                        style: TextStyle(color: Colors.white, fontSize: 50),
                       ),
                     ),
                     Row(
@@ -270,8 +289,7 @@ class _MyAppState extends State<MyApp> {
                                       child: Column(
                                         children: const [
                                           Padding(
-                                            padding:
-                                                EdgeInsets.only(top: 8.0),
+                                            padding: EdgeInsets.only(top: 8.0),
                                             child: Text(
                                               'Fri,8pm',
                                               style: TextStyle(
@@ -321,7 +339,7 @@ class _MyAppState extends State<MyApp> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 8),
                                   child: Text(
-                                    sunrise,
+                                    sunRise.toString(),
                                     style: const TextStyle(color: Colors.white),
                                   ),
                                 ),
@@ -376,7 +394,7 @@ class _MyAppState extends State<MyApp> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 8),
                                   child: Text(
-                                    sunset,
+                                    sunSet.toString(),
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
