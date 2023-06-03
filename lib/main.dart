@@ -87,7 +87,7 @@ class _MyAppState extends State<MyApp> {
         response.data["sys"]["sunrise"],
         response.data["sys"]["sunset"]);
 
-    icon= response.data['weather'][0]['icon'];
+    icon = response.data['weather'][0]['icon'];
 
     print(" >>>>" +
         response.data["sys"]["sunrise"].toString() +
@@ -140,11 +140,9 @@ class _MyAppState extends State<MyApp> {
                     currentCityDataModel?.sunset * 1000,
                     isUtc: true));
 
-
             // sunSet = currentCityDataModel?.sunset;
             // format_sunSet = DateTime.fromMillisecondsSinceEpoch(sunSet*1000);
             // format_sunSetEnd = format_sunSet.add(Duration(hours: 1));
-
 
             return Container(
               decoration: BoxDecoration(
